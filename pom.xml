@@ -17,24 +17,25 @@
         <dependency>
             <groupId>org.mule.transports</groupId>
             <artifactId>mule-transport-http</artifactId>
-            <version>3.1.0</version>
+            <version>${muleVersion}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mule.transports</groupId>
+            <artifactId>mule-transport-file</artifactId>
+            <version>${muleVersion}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.mule.transports</groupId>
             <artifactId>mule-transport-tcp</artifactId>
-            <version>3.1.0</version>
+            <version>${muleVersion}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.mule</groupId>
             <artifactId>mule-core</artifactId>
-            <version>3.1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mule</groupId>
-            <artifactId>mule-core</artifactId>
-            <version>3.1.0</version>
+            <version>${muleVersion}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -65,11 +66,6 @@
             <artifactId>mule-module-client</artifactId>
             <version>${muleVersion}</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mule</groupId>
-            <artifactId>mule-core</artifactId>
-            <version>${muleVersion}</version>
         </dependency>
 
         <dependency>

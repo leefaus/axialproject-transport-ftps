@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns="http://www.mulesoft.org/schema/mule/ftps"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:mule="http://www.mulesoft.org/schema/mule/core"
+            xmlns:file="http://www.mulesoft.org/schema/mule/file"
+            xmlns:schemadoc="http://www.mulesoft.org/schema/mule/schemadoc"
+            targetNamespace="http://www.mulesoft.org/schema/mule/ftps"
+            elementFormDefault="qualified"
+            attributeFormDefault="unqualified">
+
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:import namespace="http://www.mulesoft.org/schema/mule/file"
+                schemaLocation="http://www.mulesoft.org/schema/mule/file/3.1/mule-file.xsd"/>
+    <xsd:import namespace="http://www.mulesoft.org/schema/mule/core"
+                schemaLocation="http://www.mulesoft.org/schema/mule/core/3.1/mule.xsd"/>
+    <xsd:import namespace="http://www.mulesoft.org/schema/mule/schemadoc"
+                schemaLocation="http://www.mulesoft.org/schema/mule/schemadoc/3.1/mule-schemadoc.xsd"/>
+
+    <xsd:annotation>
+        <xsd:documentation>
+            The FTPS transport provides connectivity to FTPS servers to allow files to be read and written as messages
+            in Mule.
+        </xsd:documentation>
+        <xsd:appinfo>
+            <schemadoc:short-name>FTPS</schemadoc:short-name>
+            <schemadoc:page-title>FTPS Transport</schemadoc:page-title>
+            <schemadoc:transport-features receiveEvents="false" dispatchEvents="true"
+                                          requestEvents="true" retries="true"
+                                          transactions="false" streaming="false">
+                <schemadoc:MEPs supported="one-way" default="one-way"/>
+            </schemadoc:transport-features>
+        </xsd:appinfo>
+    </xsd:annotation>
+
+    <xsd:element name="connector" type="ftpsConnectorType" substitutionGroup="mule:abstract-connector">
+        <xsd:annotation>
+            <xsd:documentation>
+                The FTPS connector is used to configure the default behavior for FTP endpoints that reference the
+                connector. If there is only one FTP connector configured, all FTP endpoints will use that connector.
+            </xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:complexType name="ftpsConnectorType">
+        <xsd:complexContent>
+            <xsd:extension base="mule:connectorType">
+                <xsd:sequence minOccurs="0" maxOccurs="1">
+                    <xsd:element ref="file:abstract-filenameParser">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                The filenameParser is used when writing files to an FTP server. The parser will convert
+                                the outputPattern attribute to a string using the parser and the current message. To add
+                                a parser to your configuration, you import the "file" namespace into your XML
+                                configuration. For more information about filenameParsers, see the [File Transport].
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+                <xsd:attributeGroup ref="outboundAttributes"/>
+                <xsd:attributeGroup ref="commonAttributes"/>
+                <xsd:attribute name="streaming" type="mule:substitutableBoolean">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Whether an InputStream should be sent as the message payload (if true) or a byte array (if
+                            false). Default is false.
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:element name="outbound-endpoint" type="outboundEndpointType"
+                 substitutionGroup="mule:abstract-outbound-endpoint"/>
+    <xsd:complexType name="outboundEndpointType">
+        <xsd:complexContent>
+            <!--
+                The only valid exchange-pattern is one-way which is the default. No need to make
+                the exchange-pattern attribute configurable.
+            -->
+            <xsd:extension base="mule:outboundEndpointTypeWithoutExchangePattern">
+                <xsd:attributeGroup ref="addressAttributes"/>
+                <xsd:attributeGroup ref="commonAttributes"/>
+                <xsd:attributeGroup ref="outboundAttributes"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:element name="endpoint" type="globalEndpointType" substitutionGroup="mule:abstract-global-endpoint"/>
+    <xsd:complexType name="globalEndpointType">
+        <xsd:complexContent>
+            <!--
+                The only valid exchange-pattern is one-way which is the default. No need to make
+                the exchange-pattern attribute configurable.
+            -->
+            <xsd:extension base="mule:globalEndpointTypeWithoutExchangePattern">
+                <xsd:attributeGroup ref="addressAttributes"/>
+                <xsd:attributeGroup ref="commonAttributes"/>
+                <xsd:attributeGroup ref="outboundAttributes"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:attributeGroup name="outboundAttributes">
+        <xsd:attribute name="outputPattern" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation>
+                    The pattern to use when writing a file to disk. This can use the patterns supported by the
+                    filename-parser configured for this connector
+                </xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+    </xsd:attributeGroup>
+
+    <xsd:attributeGroup name="commonAttributes">
+        <xsd:attribute name="binary" type="mule:substitutableBoolean">
+            <xsd:annotation>
+                <xsd:documentation>
+                    Select/disable binary file transfer type. Default is true.
+                </xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="passive" type="mule:substitutableBoolean">
+            <xsd:annotation>
+                <xsd:documentation>
+                    Select/disable passive protocol (more likely to work through firewalls). Default is true.
+                </xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+    </xsd:attributeGroup>
+
+    <xsd:attributeGroup name="addressAttributes">
+        <xsd:attribute name="path" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation>
+                    A file location on the remote server.
+                </xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="user" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation>
+                    If FTP is authenticated, this is the username used for authenitcation.
+                </xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="password" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation>
+                    The password for the user being authenticated.
+                </xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="host" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation>
+                    An IP address (such as www.mulesoft.com, localhost, or 192.168.0.1).
+                </xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="port" type="mule:substitutablePortNumber">
+            <xsd:annotation>
+                <xsd:documentation>
+                    The port number to connect on.
+                </xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+    </xsd:attributeGroup>
+
+</xsd:schema>
