@@ -2,8 +2,11 @@ package org.axialproject.transport.ftps;
 
 import it.sauronsoftware.ftp4j.FTPClient;
 import it.sauronsoftware.ftp4j.FTPDataTransferListener;
+import it.sauronsoftware.ftp4j.FTPException;
+import it.sauronsoftware.ftp4j.FTPIllegalReplyException;
 import org.apache.commons.pool.ObjectPool;
 import org.apache.commons.pool.impl.GenericObjectPool;
+import org.apache.log4j.Logger;
 import org.mule.api.*;
 import org.mule.api.config.ThreadingProfile;
 import org.mule.api.endpoint.EndpointURI;
@@ -13,7 +16,6 @@ import org.mule.api.lifecycle.InitialisationException;
 import org.mule.api.transport.DispatchException;
 import org.mule.config.i18n.CoreMessages;
 import org.mule.config.i18n.MessageFactory;
-import org.mule.model.streaming.CallbackOutputStream;
 import org.mule.transport.AbstractConnector;
 import org.mule.transport.ConnectException;
 import org.mule.transport.file.ExpressionFilenameParser;
@@ -44,6 +46,7 @@ public class FtpsConnector extends AbstractConnector {
     private FilenameParser filenameParser = new ExpressionFilenameParser();
     private Map<String, ObjectPool> pools;
     private String outputPattern;
+    private Logger logger = Logger.getLogger(FtpsConnector.class);
 
     public FtpsConnector(MuleContext context) {
         super(context);
@@ -164,27 +167,27 @@ public class FtpsConnector extends AbstractConnector {
 
     @Override
     protected void doDispose() {
-        // template method
+        logger.info("** DISPOSE **");
     }
 
     @Override
     protected void doConnect() throws Exception {
-        // template method
+        logger.info("** CONNECT **");
     }
 
     @Override
     protected void doDisconnect() throws Exception {
-        // template method
+        logger.info("** DISCONNECT **");
     }
 
     @Override
     protected void doStart() throws MuleException {
-        // template method
+        logger.info("** START **");
     }
 
     @Override
     protected void doStop() throws MuleException {
-        // implement this
+        logger.info("** STOP **");
     }
 
     public String getProtocol() {
@@ -304,38 +307,26 @@ public class FtpsConnector extends AbstractConnector {
                 try {
                     client.upload(filename, new ByteArrayInputStream(event.getMessageAsBytes()), 0, 0, new FTPDataTransferListener() {
                         public void started() {
-                            //To change body of implemented methods use File | Settings | File Templates.
+                            logger.info("== UPLOAD STARTED ==");
                         }
 
                         public void transferred(int i) {
-                            //To change body of implemented methods use File | Settings | File Templates.
+                            logger.info("== UPLOAD TRANSFERRED ==");
                         }
 
                         public void completed() {
-                            //To change body of implemented methods use File | Settings | File Templates.
+                            logger.info("== UPLOAD COMPLETED ==");
                         }
 
                         public void aborted() {
-                            //To change body of implemented methods use File | Settings | File Templates.
+                            logger.info("== UPLOAD ABORTED ==");
                         }
 
                         public void failed() {
-                            //To change body of implemented methods use File | Settings | File Templates.
+                            logger.info("== UPLOAD FAILED ==");
                         }
                     });
-
-                    return new CallbackOutputStream(out,
-                            new CallbackOutputStream.Callback() {
-                                public void onClose() throws Exception {
-                                    try {
-                                        client.logout();
-                                        client.disconnect(true);
-                                        throw new IOException("FTP Stream failed to complete pending request");
-                                    } finally {
-                                        client.disconnect(true);
-                                    }
-                                }
-                            });
+                    client.disconnect(true);
                 } catch (Exception e) {
                     logger.debug("Error getting output stream: ", e);
                     client.disconnect(true);
@@ -351,6 +342,16 @@ public class FtpsConnector extends AbstractConnector {
             e.printStackTrace();
         }
         return out;
+    }
+
+    private void logout(FTPClient client) throws FTPIllegalReplyException, IOException, FTPException {
+        try {
+            client.disconnect(true);
+            logger.info("== DISCONNECTED ==");
+            throw new IOException("FTP Stream failed to complete pending request");
+        } finally {
+            client.disconnect(true);
+        }
     }
 
 }

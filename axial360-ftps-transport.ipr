@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AntConfiguration">
+    <defaultAnt bundledAnt="true" />
+  </component>
   <component name="CompilerConfiguration">
     <option name="DEFAULT_COMPILER" value="Javac" />
     <resourceExtensions />
@@ -189,11 +192,11 @@
   <component name="ProjectResources">
     <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="JDK 1.6" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.6" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="VcsDirectoryMappings">
-    <mapping directory="" vcs="" />
+    <mapping directory="" vcs="Git" />
   </component>
   <component name="WebServicesPlugin" addRequiredLibraries="true" />
   <component name="libraryTable">
@@ -637,37 +640,48 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/mule/tests/mule-tests-functional/3.1.1/mule-tests-functional-3.1.1-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.mule.transports:mule-transport-http:3.1.0">
+    <library name="Maven: org.mule.transports:mule-transport-file:3.1.1">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/mule/transports/mule-transport-http/3.1.0/mule-transport-http-3.1.0.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/mule/transports/mule-transport-file/3.1.1/mule-transport-file-3.1.1.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/mule/transports/mule-transport-http/3.1.0/mule-transport-http-3.1.0-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/mule/transports/mule-transport-file/3.1.1/mule-transport-file-3.1.1-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/mule/transports/mule-transport-http/3.1.0/mule-transport-http-3.1.0-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/mule/transports/mule-transport-file/3.1.1/mule-transport-file-3.1.1-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.mule.transports:mule-transport-ssl:3.1.0">
+    <library name="Maven: org.mule.transports:mule-transport-http:3.1.1">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/mule/transports/mule-transport-ssl/3.1.0/mule-transport-ssl-3.1.0.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/mule/transports/mule-transport-http/3.1.1/mule-transport-http-3.1.1.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/mule/transports/mule-transport-ssl/3.1.0/mule-transport-ssl-3.1.0-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/mule/transports/mule-transport-http/3.1.1/mule-transport-http-3.1.1-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/mule/transports/mule-transport-ssl/3.1.0/mule-transport-ssl-3.1.0-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/mule/transports/mule-transport-http/3.1.1/mule-transport-http-3.1.1-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.mule.transports:mule-transport-tcp:3.1.0">
+    <library name="Maven: org.mule.transports:mule-transport-ssl:3.1.1">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/mule/transports/mule-transport-tcp/3.1.0/mule-transport-tcp-3.1.0.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/mule/transports/mule-transport-ssl/3.1.1/mule-transport-ssl-3.1.1.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/mule/transports/mule-transport-tcp/3.1.0/mule-transport-tcp-3.1.0-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/mule/transports/mule-transport-ssl/3.1.1/mule-transport-ssl-3.1.1-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/mule/transports/mule-transport-tcp/3.1.0/mule-transport-tcp-3.1.0-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/mule/transports/mule-transport-ssl/3.1.1/mule-transport-ssl-3.1.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.mule.transports:mule-transport-tcp:3.1.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/mule/transports/mule-transport-tcp/3.1.1/mule-transport-tcp-3.1.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/mule/transports/mule-transport-tcp/3.1.1/mule-transport-tcp-3.1.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/mule/transports/mule-transport-tcp/3.1.1/mule-transport-tcp-3.1.1-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.mule.transports:mule-transport-vm:3.1.1">

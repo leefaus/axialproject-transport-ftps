@@ -3,7 +3,6 @@
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_5" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
-    <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" isTestSource="false" />
@@ -13,9 +12,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.mule.transports:mule-transport-http:3.1.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.mule.transports:mule-transport-ssl:3.1.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.mule.transports:mule-transport-tcp:3.1.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.mule.transports:mule-transport-http:3.1.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.mule.transports:mule-transport-ssl:3.1.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.mule.transports:mule-transport-tcp:3.1.1" level="project" />
     <orderEntry type="library" name="Maven: org.mule.modules:mule-module-spring-config:3.1.1" level="project" />
     <orderEntry type="library" name="Maven: org.mule:mule-core:3.1.1" level="project" />
     <orderEntry type="library" name="Maven: commons-beanutils:commons-beanutils:1.8.0" level="project" />
@@ -53,6 +52,7 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: commons-httpclient:commons-httpclient:3.1-osgi" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: tomcat:tomcat-util:5.5.23" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: tomcat:tomcat-apr:5.5.23" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.mule.transports:mule-transport-file:3.1.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.mule.transports:mule-transport-vm:3.1.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.mule.modules:mule-module-xml:3.1.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:1.0.1" level="project" />
