@@ -15,4 +15,9 @@ public class FtpsMessageDispatcherFactory extends AbstractMessageDispatcherFacto
     public MessageDispatcher create(OutboundEndpoint endpoint) throws MuleException {
         return new FtpsMessageDispatcher(endpoint);
     }
+
+    public boolean isCreateDispatcherPerRequest() {
+        return true;
+    }
+
 }
