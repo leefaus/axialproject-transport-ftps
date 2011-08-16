@@ -19,7 +19,7 @@ public class FtpsMessageDispatcher extends AbstractMessageDispatcher {
     public FtpsMessageDispatcher(OutboundEndpoint endpoint) {
         super(endpoint);
         this.connector = (FtpsConnector) endpoint.getConnector();
-        this.connector.setMaxDispatchersActive(1);
+        this.connector.setMaxDispatchersActive(5);
     }
 
     @Override

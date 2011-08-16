@@ -14,6 +14,7 @@ import org.mule.api.endpoint.OutboundEndpoint;
 import org.mule.api.lifecycle.InitialisationException;
 import org.mule.api.transport.DispatchException;
 import org.mule.config.i18n.CoreMessages;
+import org.mule.module.client.MuleClient;
 import org.mule.transport.AbstractConnector;
 import org.mule.transport.ConnectException;
 import org.mule.transport.file.ExpressionFilenameParser;
@@ -42,6 +43,7 @@ public class FtpsConnector extends AbstractConnector {
     private String outputPattern;
     private Logger logger = Logger.getLogger(FtpsConnector.class);
 
+
     public FtpsConnector(MuleContext context) {
         super(context);
     }
@@ -51,7 +53,6 @@ public class FtpsConnector extends AbstractConnector {
         if (filenameParser != null) {
             filenameParser.setMuleContext(muleContext);
         }
-
     }
 
     @Override
@@ -145,6 +146,7 @@ public class FtpsConnector extends AbstractConnector {
             if (event.getMessage().getPayloadAsString().length() > 0) {
                 final String messagePayload = event.getMessage().getPayloadForLogging();
                 final ByteArrayInputStream stream = new ByteArrayInputStream(event.getMessage().getPayloadAsBytes());
+                final MuleClient muleClient = new MuleClient(muleContext);
 
                 try {
                     try {
@@ -164,16 +166,27 @@ public class FtpsConnector extends AbstractConnector {
                             public void aborted() {
                                 logger.warn("== UPLOAD ABORTED ==");
                                 logger.warn("MESSAGE STRING = \n" + messagePayload);
+                                try {
+                                    muleClient.dispatch("ccc.exception.in", messagePayload, null);
+                                } catch (MuleException e) {
+                                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                                }
                             }
 
                             public void failed() {
                                 logger.warn("== UPLOAD FAILED ==");
                                 logger.warn("MESSAGE STRING = \n" + messagePayload);
+                                try {
+                                    muleClient.dispatch("ccc.exception.in", messagePayload, null);
+                                } catch (MuleException e) {
+                                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                                }
                             }
                         });
                         stream.close();
                     } catch (Exception e) {
                         logger.debug("Error getting output stream: ", e);
+                        muleClient.dispatch("ccc.exception.in", messagePayload, null);
                         throw e;
                     }
                     stream.close();
@@ -225,7 +238,7 @@ public class FtpsConnector extends AbstractConnector {
         FTPClient client = new FTPClient();
         client.setSSLSocketFactory(sslSocketFactory);
         client.setSecurity(FTPClient.SECURITY_FTPS);
-        client.setPassive(false);
+        client.setPassive(true);
         client.connect(endpoint.getHost());
         client.login(endpoint.getUser(), endpoint.getPassword());
         if (endpoint.getPath().equals("") || (endpoint.getPath() != null)) {
