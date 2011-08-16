@@ -19,25 +19,13 @@ public class FtpsMessageDispatcher extends AbstractMessageDispatcher {
     public FtpsMessageDispatcher(OutboundEndpoint endpoint) {
         super(endpoint);
         this.connector = (FtpsConnector) endpoint.getConnector();
-        this.connector.setMaxDispatchersActive(5);
     }
 
     @Override
     protected void doDispatch(MuleEvent muleEvent) throws Exception {
         logger.info("=== doDispatch ===");
         Object data = muleEvent.getMessage().getPayload();
-        OutputStream out = connector.getOutputStream((OutboundEndpoint) endpoint, muleEvent, client);
-    }
-
-    protected void doConnect() throws Exception {
-        logger.info("=== doConnect ===");
-        client = connector.createFtpClient(endpoint.getEndpointURI());
-    }
-
-    protected void doDisconnect() throws Exception {
-        logger.info("=== doDisconnect ===");
-        //client.logout();
-        client.disconnect(true);
+        OutputStream out = connector.getOutputStream((OutboundEndpoint) endpoint, muleEvent);
     }
 
     @Override

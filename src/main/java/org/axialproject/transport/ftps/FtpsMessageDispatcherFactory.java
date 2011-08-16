@@ -17,7 +17,7 @@ public class FtpsMessageDispatcherFactory extends AbstractMessageDispatcherFacto
     }
 
     public boolean isCreateDispatcherPerRequest() {
-        return true;
+        return false;
     }
 
 }
