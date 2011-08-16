@@ -120,9 +120,9 @@ public class FtpsConnector extends AbstractConnector {
 
         byte poolExhaustedAction = ThreadingProfile.DEFAULT_POOL_EXHAUST_ACTION;
 
-        ThreadingProfile receiverThreadingProfile = this.getReceiverThreadingProfile();
-        if (receiverThreadingProfile != null) {
-            int threadingProfilePoolExhaustedAction = receiverThreadingProfile.getPoolExhaustedAction();
+        ThreadingProfile dispatcherThreadingProfile = this.getDispatcherThreadingProfile();
+        if (dispatcherThreadingProfile != null) {
+            int threadingProfilePoolExhaustedAction = dispatcherThreadingProfile.getPoolExhaustedAction();
             if (threadingProfilePoolExhaustedAction == ThreadingProfile.WHEN_EXHAUSTED_WAIT) {
                 poolExhaustedAction = GenericObjectPool.WHEN_EXHAUSTED_BLOCK;
             } else if (threadingProfilePoolExhaustedAction == ThreadingProfile.WHEN_EXHAUSTED_ABORT) {
@@ -155,7 +155,8 @@ public class FtpsConnector extends AbstractConnector {
         }
 
         pools = new HashMap<String, ObjectPool>();
-
+        setMaxDispatchersActive(5);
+        setDispatcherPoolMaxWait(5);
     }
 
     @Override
