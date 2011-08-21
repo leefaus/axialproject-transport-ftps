@@ -74,6 +74,8 @@ public class FtpsConnector extends AbstractConnector {
         if (logger.isDebugEnabled()) {
             logger.debug("<<< releasing client for " + uri);
         }
+        logger.info("**** RELEASE FTP " + getFtpPool(uri).getNumActive() + "  " + getFtpPool(uri).getNumIdle() + " ****");
+
         if (dispatcherFactory.isCreateDispatcherPerRequest()) {
             destroyFtp(uri, client);
         } else {
@@ -118,21 +120,10 @@ public class FtpsConnector extends AbstractConnector {
     protected GenericObjectPool createPool(FtpsConnectionFactory connectionFactory) {
         GenericObjectPool genericPool = new GenericObjectPool(connectionFactory);
 
-        byte poolExhaustedAction = ThreadingProfile.DEFAULT_POOL_EXHAUST_ACTION;
-
-        ThreadingProfile dispatcherThreadingProfile = this.getDispatcherThreadingProfile();
-        if (dispatcherThreadingProfile != null) {
-            int threadingProfilePoolExhaustedAction = dispatcherThreadingProfile.getPoolExhaustedAction();
-            if (threadingProfilePoolExhaustedAction == ThreadingProfile.WHEN_EXHAUSTED_WAIT) {
-                poolExhaustedAction = GenericObjectPool.WHEN_EXHAUSTED_BLOCK;
-            } else if (threadingProfilePoolExhaustedAction == ThreadingProfile.WHEN_EXHAUSTED_ABORT) {
-                poolExhaustedAction = GenericObjectPool.WHEN_EXHAUSTED_FAIL;
-            } else if (threadingProfilePoolExhaustedAction == ThreadingProfile.WHEN_EXHAUSTED_RUN) {
-                poolExhaustedAction = GenericObjectPool.WHEN_EXHAUSTED_GROW;
-            }
-        }
-
-        genericPool.setWhenExhaustedAction(poolExhaustedAction);
+        genericPool.setMaxActive(10);
+        genericPool.setMaxWait(30000);
+        genericPool.setMaxIdle(2);
+        genericPool.setWhenExhaustedAction(GenericObjectPool.WHEN_EXHAUSTED_BLOCK);
         genericPool.setTestOnBorrow(isValidateConnections());
         return genericPool;
     }
@@ -155,8 +146,6 @@ public class FtpsConnector extends AbstractConnector {
         }
 
         pools = new HashMap<String, ObjectPool>();
-        setMaxDispatchersActive(5);
-        setDispatcherPoolMaxWait(5);
     }
 
     @Override
@@ -242,13 +231,12 @@ public class FtpsConnector extends AbstractConnector {
         return getFilenameParser().getFilename(message, pattern);
     }
 
-    public OutputStream getOutputStream(OutboundEndpoint endpoint, MuleEvent event) throws MuleException {
+    public void uploadFile(OutboundEndpoint endpoint, MuleEvent event) throws MuleException {
         logger.info("=== getOutputStream ===");
         String filename = null;
-        OutputStream out = null;
 
         try {
-            FTPClient client = this.getFtp(endpoint.getEndpointURI());
+            FTPClient client = getFtp(endpoint.getEndpointURI());
             filename = getFilename(endpoint, event.getMessage());
             if (event.getMessage().getPayloadAsString().length() > 0) {
                 final String messagePayload = event.getMessage().getPayloadForLogging();
@@ -291,10 +279,13 @@ public class FtpsConnector extends AbstractConnector {
                             }
                         });
                         stream.close();
+
                     } catch (Exception e) {
                         logger.debug("Error getting output stream: ", e);
                         muleClient.dispatch("ccc.exception.in", messagePayload, null);
                         throw e;
+                    } finally {
+                       releaseFtp(endpoint.getEndpointURI(), client);
                     }
                     stream.close();
                 } catch (ConnectException ce) {
@@ -309,6 +300,5 @@ public class FtpsConnector extends AbstractConnector {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return out;
     }
 }

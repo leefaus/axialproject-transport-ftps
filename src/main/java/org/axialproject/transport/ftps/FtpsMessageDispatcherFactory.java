@@ -12,8 +12,11 @@ import org.mule.transport.AbstractMessageDispatcherFactory;
  * @TODO Add Java Doc Information
  */
 public class FtpsMessageDispatcherFactory extends AbstractMessageDispatcherFactory {
+    private FtpsMessageDispatcher dispatcher;
+
     public MessageDispatcher create(OutboundEndpoint endpoint) throws MuleException {
-        return new FtpsMessageDispatcher(endpoint);
+        dispatcher = new FtpsMessageDispatcher(endpoint);
+        return dispatcher;
     }
 
     public boolean isCreateDispatcherPerRequest() {

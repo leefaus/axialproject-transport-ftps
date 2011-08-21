@@ -25,8 +25,10 @@ public class FtpsMessageDispatcher extends AbstractMessageDispatcher {
     protected void doDispatch(MuleEvent muleEvent) throws Exception {
         logger.info("=== doDispatch ===");
         Object data = muleEvent.getMessage().getPayload();
-        OutputStream out = connector.getOutputStream((OutboundEndpoint) endpoint, muleEvent);
+        connector.uploadFile((OutboundEndpoint) endpoint, muleEvent);
     }
+
+
 
     @Override
     protected MuleMessage doSend(MuleEvent muleEvent) throws Exception {
